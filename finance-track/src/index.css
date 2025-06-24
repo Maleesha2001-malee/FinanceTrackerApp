@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,4 +14,62 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Base theme colors */
+:root {
+  --primary-color: #3b82f6; /* Default blue */
+  --bg-primary: #f8fafc;
+  --text-primary: #333333;
+}
+
+/* Dark mode overrides - works with Tailwind dark: class */
+.dark {
+  --bg-primary: #1e293b;
+  --text-primary: #f8fafc;
+}
+
+/* Color theme variations */
+[data-color-theme="blue"] {
+  --primary-color: #3b82f6;
+}
+
+[data-color-theme="green"] {
+  --primary-color: #10b981;
+}
+
+[data-color-theme="orange"] {
+  --primary-color: #f97316;
+}
+
+[data-color-theme="red"] {
+  --primary-color: #ef4444;
+}
+
+[data-color-theme="purple"] {
+  --primary-color: #a855f7;
+}
+
+/* Apply these variables to your elements */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+/* Custom utility classes for using CSS variables with Tailwind */
+.bg-theme-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.text-theme-primary {
+  color: var(--primary-color) !important;
+}
+
+.border-theme-primary {
+  border-color: var(--primary-color) !important;
 }
