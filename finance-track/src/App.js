@@ -13,20 +13,20 @@ import Navbar from './components/layout/Navbar';
 import WelcomePage from './components/layout/WelcomePage';
 import AuthProvider from './context/AuthContext';
 import { PreferencesProvider, usePreferences } from './context/PreferencesContext';
+import ThemeInitializer from './components/ThemeInitializer';
+
 
 function ThemeManager({ children }) {
   const { preferences } = usePreferences();
 
-  
   useEffect(() => {
-    
     document.documentElement.classList.toggle('dark', preferences.theme === 'dark');
+    
     document.documentElement.dataset.colorTheme = preferences.colorTheme;
   }, [preferences.theme, preferences.colorTheme]);
 
   return children;
 }
-
 function App() {
   return (
     <AuthProvider>
