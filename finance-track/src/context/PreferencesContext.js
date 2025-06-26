@@ -2,10 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
-// Create the context
+
 export const PreferencesContext = createContext();
 
-// Create the provider component
+
 export const PreferencesProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
   const [preferences, setPreferences] = useState({
@@ -23,7 +23,7 @@ export const PreferencesProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Create axios instance with auth token
+  
   const getAxiosInstance = () => {
     const token = localStorage.getItem('token');
     return axios.create({
@@ -42,7 +42,7 @@ export const PreferencesProvider = ({ children }) => {
         [key]: value
       };
       
-      // If theme or colorTheme is changing, apply it immediately
+      
       if (key === 'theme' || key === 'colorTheme') {
         applyThemeChanges(
           key === 'theme' ? value : prev.theme,
@@ -54,25 +54,22 @@ export const PreferencesProvider = ({ children }) => {
     });
   };
 
-  // Fetch preferences when user is logged in
+ 
   useEffect(() => {
     if (currentUser) {
       fetchPreferences();
       
-      // Apply theme immediately after login
+    
       applyThemeChanges(preferences.theme, preferences.colorTheme);
     }
   }, [currentUser]);
 
- // Function to apply theme changes to the document
+
 const applyThemeChanges = (theme, colorTheme) => {
-  // Apply dark/light theme using Tailwind's dark class
   document.documentElement.classList.toggle('dark', theme === 'dark');
-  
-  // Apply color theme
   document.documentElement.dataset.colorTheme = colorTheme;
 };
-  // Fetch user preferences
+  
   const fetchPreferences = async () => {
     if (!currentUser) return;
     
@@ -84,7 +81,6 @@ const applyThemeChanges = (theme, colorTheme) => {
       const response = await axiosInstance.get('/api/users/preferences');
       
       if (response.data) {
-        // Update preferences state
         const updatedPreferences = {
           currency: response.data.currency || preferences.currency,
           dateFormat: response.data.dateFormat || preferences.dateFormat,
@@ -100,7 +96,7 @@ const applyThemeChanges = (theme, colorTheme) => {
         
         setPreferences(updatedPreferences);
         
-        // Apply theme changes
+       
         applyThemeChanges(updatedPreferences.theme, updatedPreferences.colorTheme);
       }
       
@@ -122,7 +118,7 @@ const applyThemeChanges = (theme, colorTheme) => {
     }));
   };
 
-  // Save preferences to the backend
+  
   const savePreferences = async () => {
     if (!currentUser) return false;
     
@@ -132,7 +128,7 @@ const applyThemeChanges = (theme, colorTheme) => {
       
       const axiosInstance = getAxiosInstance();
       
-      // Save general preferences
+     
       const prefsResponse = await axiosInstance.put('/api/users/preferences', {
         currency: preferences.currency,
         dateFormat: preferences.dateFormat,
@@ -140,7 +136,7 @@ const applyThemeChanges = (theme, colorTheme) => {
         colorTheme: preferences.colorTheme
       });
       
-      // Save notification settings
+     
       const notifResponse = await axiosInstance.put('/api/users/notifications', {
         emailNotifications: preferences.notifications.emailNotifications,
         budgetAlerts: preferences.notifications.budgetAlerts,
@@ -148,7 +144,7 @@ const applyThemeChanges = (theme, colorTheme) => {
         weeklySummary: preferences.notifications.weeklySummary
       });
       
-      // Apply theme changes immediately
+     
       applyThemeChanges(preferences.theme, preferences.colorTheme);
       
       setLoading(false);
@@ -179,7 +175,7 @@ const applyThemeChanges = (theme, colorTheme) => {
   );
 };
 
-// Custom hook to use the PreferencesContext
+
 export const usePreferences = () => {
   const context = useContext(PreferencesContext);
   if (!context) {
