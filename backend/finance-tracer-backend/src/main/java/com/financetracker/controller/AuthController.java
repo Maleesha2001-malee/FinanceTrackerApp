@@ -47,24 +47,22 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        // First check if we received an email or username
         String usernameOrEmail = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         
         System.out.println("Login request received with username: " + usernameOrEmail);
         System.out.println("Login request received with email: " + loginRequest.getEmail());
         
-        // If username is empty, try using email
+        
         if (usernameOrEmail == null || usernameOrEmail.isEmpty()) {
             usernameOrEmail = loginRequest.getEmail();
             System.out.println("Using email as username: " + usernameOrEmail);
         }
         
-        // Add logging to debug
+        
         System.out.println("Login attempt with principal: " + usernameOrEmail);
         
         try {
-            // Let's check if the user exists before attempting authentication
             User user = userRepository.findByUsername(usernameOrEmail).orElse(null);
             
             if (user == null) {
@@ -77,12 +75,10 @@ public class AuthController {
                         .body(new MessageResponse("Error: Invalid credentials"));
                 }
                 
-                // If found by email, use the actual username for authentication
                 usernameOrEmail = user.getUsername();
                 System.out.println("Found user by email, using username: " + usernameOrEmail);
             }
             
-            // Now authenticate with the username we found
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
 
@@ -98,7 +94,7 @@ public class AuthController {
             userData.put("id", userDetails.getId());
             userData.put("username", userDetails.getUsername());
             userData.put("email", userDetails.getEmail());
-            userData.put("fullName", user.getFullName()); // Add full name to response
+            userData.put("fullName", user.getFullName()); 
             userData.put("roles", roles);
             
             Map<String, Object> response = new HashMap<>();
@@ -236,7 +232,7 @@ public class AuthController {
     @GetMapping("/user-info")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         try {
-            // Extract and validate the token manually for better debugging
+            
             String headerAuth = request.getHeader("Authorization");
             
             if (headerAuth == null || !headerAuth.startsWith("Bearer ")) {
@@ -257,7 +253,7 @@ public class AuthController {
             User user = userRepository.findByUsername(username)
                     .orElseThrow();
             
-            // Build response
+            
             Map<String, Object> response = new HashMap<>();
             response.put("id", user.getId());
             response.put("username", user.getUsername());
