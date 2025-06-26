@@ -16,20 +16,17 @@ code {
     monospace;
 }
 
-/* Base theme colors */
 :root {
-  --primary-color: #3b82f6; /* Default blue */
+  --primary-color: #3b82f6; 
   --bg-primary: #f8fafc;
   --text-primary: #333333;
 }
 
-/* Dark mode overrides - works with Tailwind dark: class */
 .dark {
   --bg-primary: #1e293b;
   --text-primary: #f8fafc;
 }
 
-/* Color theme variations */
 [data-color-theme="blue"] {
   --primary-color: #3b82f6;
 }
@@ -50,7 +47,6 @@ code {
   --primary-color: #a855f7;
 }
 
-/* Apply these variables to your elements */
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -61,7 +57,6 @@ body {
   background-color: var(--primary-color);
 }
 
-/* Custom utility classes for using CSS variables with Tailwind */
 .bg-theme-primary {
   background-color: var(--primary-color) !important;
 }
